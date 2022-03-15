@@ -2,25 +2,16 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedProduct } from "../redux/actions/ProductAction";
-function ProductDeatils() {
-  const { productId } = useParams();
+import { ProductDetail, selectedProduct } from "../redux/actions/ProductAction";
+
+const ProductDeatils = () => {
+  const { productId}  = useParams();
   const dispatch = useDispatch();
+  useEffect(() => {
+  dispatch(ProductDetail(productId))
+  },[]);
   const product = useSelector((state) => state.product);
   const { image, title, price, category, description } = product;
-  const fetchProductDetails = async (id) => {
-    const response = await axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .catch((e) => {
-        console.log(e);
-      });
-    dispatch(selectedProduct(response.data));
-  };
-
-  useEffect(() => {
-    fetchProductDetails(productId);
-  }, []);
-
   return (
     <div>
       <div className="ui grid container">
@@ -57,6 +48,6 @@ function ProductDeatils() {
       </div>
     </div>
   );
-}
+};
 
 export default ProductDeatils;
